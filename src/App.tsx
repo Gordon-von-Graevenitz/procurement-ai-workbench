@@ -1,21 +1,31 @@
 import { useState } from "react";
 import { PurchaseRequestCard } from "./components/PurchaseRequestCard";
 import { purchaseRequests } from "./data/purchase-requests";
+import { RequestFilters, type StatusFilter } from "./components/RequestFilters";
 
 export default function App() {
   const [query, setQuery] = useState("");
+  const [status, setStatus] = useState<StatusFilter>("All");
 
   const normalizedQuery = query.trim().toLowerCase();
 
-  const filteredRequests = purchaseRequests.filter((request) =>
-    [
-      request.id,
-      request.title,
-      request.supplier,
-      request.requestedBy,
-    ].some((value) =>
-      value.toLowerCase().includes(normalizedQuery),
-    ),
+
+  const filteredRequests = purchaseRequests.filter((request) => {
+    const matchesQuery =
+      [
+        request.id,
+        request.title,
+        request.supplier,
+        request.requestedBy,
+      ].some((value) =>
+        value.toLowerCase().includes(normalizedQuery),
+      );
+
+    const matchesStatus =
+      status === "All" || request.status === status;
+
+    return matchesQuery && matchesStatus;
+  }
   );
 
   return (
@@ -32,16 +42,11 @@ export default function App() {
       </header>
 
       <section>
-        <div className="search-form">
-          <label htmlFor="search">
-            Search purchase requests:
-            <input
-              id="search"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-            />
-          </label>
-        </div>
+        <RequestFilters
+          query={query}
+          status={status}
+          onQueryChange={setQuery}
+          onStatusChange={setStatus} />
 
 
         {filteredRequests.length === 0 ? (
