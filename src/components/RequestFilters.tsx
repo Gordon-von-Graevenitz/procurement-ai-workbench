@@ -1,4 +1,5 @@
 import type { PurchaseRequestStatus } from "../domain/purchase-request";
+import styles from "./RequestFilters.module.css";
 
 export type StatusFilter = PurchaseRequestStatus | "All";
 
@@ -11,18 +12,20 @@ interface RequestFiltersProps {
 
 export function RequestFilters({ query, status, onQueryChange, onStatusChange }: RequestFiltersProps) {
     return (
-        <div className="search-form">
-            <label htmlFor="search">
+        <div className={styles.filters}>
+            <label className={styles.field} htmlFor="search">
                 Search purchase requests:
                 <input
+                    className={styles.control}
                     id="search"
                     value={query}
                     onChange={(event) => onQueryChange(event.target.value)}
                 />
             </label>
-            <label htmlFor="status">
+            <label className={styles.field} htmlFor="status">
                 Filter by status:
                 <select
+                    className={styles.control}
                     id="status"
                     value={status}
                     onChange={(event) => onStatusChange(event.target.value as StatusFilter)}

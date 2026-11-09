@@ -2,6 +2,7 @@ import { useState } from "react";
 import { PurchaseRequestCard } from "./components/PurchaseRequestCard";
 import { purchaseRequests } from "./data/purchase-requests";
 import { RequestFilters, type StatusFilter } from "./components/RequestFilters";
+import styles from "./App.module.css";
 
 export default function App() {
   const [query, setQuery] = useState("");
@@ -29,10 +30,10 @@ export default function App() {
   );
 
   return (
-    <main className="app-shell">
-      <header className="hero">
-        <h1>Procurement AI Workbench</h1>
-        <p className="hero__summary">
+    <main className={styles.appShell}>
+      <header className={styles.hero}>
+        <h1 className={styles.title}>Procurement AI Workbench</h1>
+        <p className={styles.summary}>
           {filteredRequests.length === 1 ? (
             `There is ${filteredRequests.length} purchase request matching your search.`
           ) : (
@@ -50,11 +51,11 @@ export default function App() {
 
 
         {filteredRequests.length === 0 ? (
-          <p className="no-results">
+          <p className={styles.noResults}>
             No purchase requests match your search.
           </p>
         ) : (
-          <div className="request-list">
+          <div className={styles.requestList}>
             {filteredRequests.map((request) => (
               <PurchaseRequestCard
                 key={request.id}
